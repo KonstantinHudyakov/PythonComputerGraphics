@@ -8,8 +8,9 @@ from graphics.genPartLogLine import gen_part_log_lines
 from graphics.Trap import gen_trap
 from graphics.Trap2 import gen_trap2
 
-def gen_graphics_and_plot(gen_func, n, plot_ind):
-    graphics = gen_func(n)
+
+def add_graphics_to_plot(gen_func, plot_ind):
+    graphics = gen_func(10)
     j = 0
     for i in range(plot_ind, plot_ind + 10):
         img = graphics[j]
@@ -20,15 +21,45 @@ def gen_graphics_and_plot(gen_func, n, plot_ind):
     return graphics
 
 
-n = 10
-plt.figure(dpi=300)
-lines = gen_graphics_and_plot(gen_lines, n, 1)
-dotted_lines = gen_graphics_and_plot(gen_dotted_lines, n, 11)
-logs = gen_graphics_and_plot(gen_log_lines, n, 21)
-part_logs = gen_graphics_and_plot(gen_part_log_lines, n, 31)
-traps = gen_graphics_and_plot(gen_trap, n, 41)
-traps2 = gen_graphics_and_plot(gen_trap2, n, 51)
+def plot_graphics():
+    plt.figure(dpi=300)
+    add_graphics_to_plot(gen_lines, 1)
+    add_graphics_to_plot(gen_dotted_lines, 11)
+    add_graphics_to_plot(gen_log_lines, 21)
+    add_graphics_to_plot(gen_part_log_lines, 31)
+    add_graphics_to_plot(gen_trap, 41)
+    add_graphics_to_plot(gen_trap2, 51)
 
-plt.subplots_adjust(hspace=0.5)
-plt.show()
+    plt.subplots_adjust(hspace=0.5)
+    plt.show()
 
+
+def gen_data(n):
+    data = gen_lines(n)
+    data = np.concatenate((data, gen_dotted_lines(n)))
+    data = np.concatenate((data, gen_log_lines(n)))
+    data = np.concatenate((data, gen_part_log_lines(n)))
+    data = np.concatenate((data, gen_trap(n)))
+    data = np.concatenate((data, gen_trap2(n)))
+    return data
+
+
+def gen_labels(n, num_of_classes):
+    labels = np.empty(shape=1, dtype='uint8')
+    for i in range(0, num_of_classes):
+        labels = np.concatenate((labels, np.full(n, i)))
+    return labels
+
+
+def gen_dataset(n):
+    n //= 6
+    data = gen_data(n)
+    labels = gen_labels(n, 6)
+
+    shuffled_data = []
+    shuffled_labels = []
+    perm = np.random.permutation(len(data))
+    for ind in perm:
+        shuffled_data.append(data[ind])
+        shuffled_labels.append(labels[ind])
+    return shuffled_data, shuffled_labels
