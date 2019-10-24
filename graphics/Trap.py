@@ -43,34 +43,6 @@ def gen_trap(N):
     return imgs
 
 
-N = 25
-img_rc = 64
-imgs = np.zeros((N, img_rc, img_rc), dtype='uint8')  # заполнение нулями массива размерности ()
-all_a = []
-all_b = []
-
-for i in range(N):
-    x1 = np.random.uniform(5., 25.)
-    x2 = np.random.uniform(35., 63.)
-    y1 = np.random.uniform(3., 10.)
-    y2 = np.random.uniform(16., 26.)
-    y3 = np.random.uniform(32., 42.)
-    y4 = np.random.uniform(48., 60.)
-    draw_straight_line(x1, y1, y4, imgs, i)
-    draw_straight_line(x2, y2, y3, imgs, i)
-    draw_line(x1, y1, x2, y2, imgs, i)
-    draw_line(x1, y4, x2, y3, imgs, i)
-
-for i in range(15):
-    plt.subplot(5, 3, i + 1)  # задает число отдельных изображений в окне вывода
-    img = imgs[i]
-    plt.imshow(img, cmap='gray')
-    # ttl = 'a= ' + all_a[i] + '; b= ' + all_b[i]
-    # plt.title(ttl)
-    plt.axis('off')
-plt.subplots_adjust(hspace=0.5)
-plt.show()
-
 # imgs_labels = np.zeros(N, dtype = 'uint8')
 # for i in range (N):
 #    imgs_labels[i] = 1
