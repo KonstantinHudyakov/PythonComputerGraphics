@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from graphics.genLines import gen_lines, gen_dotted_lines
 from graphics.genLogLines import gen_log_lines, gen_part_log_lines
+from graphics.genSinus import gen_sinus, gen_part_sinus
 from graphics.genTrap import gen_trap, gen_trap2
 
 
@@ -22,8 +23,8 @@ def plot_graphics():
     plt.figure(dpi=300)
     add_graphics_to_plot(gen_lines, 1)
     add_graphics_to_plot(gen_dotted_lines, 11)
-    add_graphics_to_plot(gen_log_lines, 21)
-    add_graphics_to_plot(gen_part_log_lines, 31)
+    add_graphics_to_plot(gen_sinus, 21)
+    add_graphics_to_plot(gen_part_sinus, 31)
     add_graphics_to_plot(gen_trap, 41)
     add_graphics_to_plot(gen_trap2, 51)
 
@@ -34,8 +35,8 @@ def plot_graphics():
 def gen_data(n):
     data = gen_lines(n)
     data = np.concatenate((data, gen_dotted_lines(n)))
-    data = np.concatenate((data, gen_log_lines(n)))
-    data = np.concatenate((data, gen_part_log_lines(n)))
+    data = np.concatenate((data, gen_sinus(n)))
+    data = np.concatenate((data, gen_part_sinus(n)))
     data = np.concatenate((data, gen_trap(n)))
     data = np.concatenate((data, gen_trap2(n)))
     return data
