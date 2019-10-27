@@ -23,6 +23,27 @@ def gen_lines(N):
     return imgs
 
 
+def gen_dotted_lines(N):
+    img_rc = 64
+    imgs = np.zeros((N, img_rc, img_rc), dtype='uint8')
+    for i in range(N):
+        a = np.random.uniform(-2., 2.)  # случайное число
+        b = np.random.uniform(20., 40.)
+        dot_space = np.random.randint(2, 3)
+        x = 0.
+        dx = 0.25  # пискели
+        while x < img_rc - 1:
+            x += dx  # меняется по пикселям
+            if int(x) / dot_space % 2 != 0:
+                continue
+            y = a * x + b
+            ix = int(x)
+            iy = int(y)
+            if iy >= 0 and iy <= 63:
+                clr = np.random.choice(range(100, 255))
+                imgs[i, ix, iy] = clr
+    return imgs
+
 # imgs_labels = np.zeros(N, dtype = 'uint8')
 # for i in range (N):
 #    imgs_labels[i] = 0

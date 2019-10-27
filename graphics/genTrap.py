@@ -26,6 +26,23 @@ def draw_straight_line(x, y1, y2, imgs, i):
         imgs[i, x, y] = clr
 
 
+def gen_trap(N):
+    img_rc = 64
+    imgs = np.zeros((N, img_rc, img_rc), dtype='uint8')  # заполнение нулями массива размерности ()
+    for i in range(N):
+        x1 = np.random.uniform(5., 25.)
+        x2 = np.random.uniform(35., 63.)
+        y1 = np.random.uniform(3., 10.)
+        y2 = np.random.uniform(16., 26.)
+        y3 = np.random.uniform(32., 42.)
+        y4 = np.random.uniform(48., 60.)
+        draw_straight_line(x1, y1, y4, imgs, i)
+        draw_straight_line(x2, y2, y3, imgs, i)
+        draw_line(x1, y1, x2, y2, imgs, i)
+        draw_line(x1, y4, x2, y3, imgs, i)
+    return imgs
+
+
 def gen_trap2(N):
     img_rc = 64
     imgs = np.zeros((N, img_rc, img_rc), dtype='uint8')
