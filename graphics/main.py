@@ -26,6 +26,41 @@ def get_class_title(class_num):
     return title
 
 
+def plot_history(history):
+    acc = history.history['val_accuracy']
+    loss = history.history['val_loss']
+    plt.figure(dpi=300)
+
+    plt.subplot(1, 2, 1)
+    plt.plot(range(1, 11), acc, 'ro')
+    plt.axis([0, 11, 0.5, 1])
+    plt.ylabel('accuracy')
+    plt.xlabel('epoch')
+
+    plt.subplot(1, 2, 2)
+    plt.plot(range(1, 11), loss, 'r--')
+    plt.axis([0, 11, 0, 0.1])
+    plt.ylabel('loss')
+    plt.xlabel('epoch')
+
+    plt.subplots_adjust(hspace=0.5)
+    plt.show()
+
+
+def predict_and_plot(model, test_data):
+    classes = model.predict_classes(test_data)
+    plt.figure(dpi=300)
+    for i in range(15):
+        img = test_data[i]
+        img = img.reshape((64, 64))
+        plt.subplot(3, 5, i + 1)
+        plt.title(get_class_title(classes[i]))
+        plt.imshow(img, cmap='gray')
+        plt.axis('off')
+    plt.subplots_adjust(hspace=0.5)
+    plt.show()
+
+
 # plot_graphics()
 
 x_train, y_train = gen_dataset(3000)
@@ -49,36 +84,5 @@ model.compile(optimizer='Adam', loss='mse', metrics=['accuracy'])
 
 history = model.fit(x_train, y_train, batch_size=128, epochs=10, verbose=2, validation_data=(x_test, y_test))
 
-acc = history.history['val_accuracy']
-loss = history.history['val_loss']
-
-plt.figure(dpi=300)
-plt.subplot(1, 2, 1)
-plt.plot(range(1, 11), acc, 'ro')
-plt.axis([0, 11, 0.5, 1])
-plt.ylabel('accuracy')
-plt.xlabel('epoch')
-
-plt.subplot(1, 2, 2)
-plt.plot(range(1, 11), loss, 'r--')
-plt.axis([0, 11, 0, 0.1])
-plt.ylabel('loss')
-plt.xlabel('epoch')
-
-plt.subplots_adjust(hspace=0.5)
-plt.show()
-
-
-classes = model.predict_classes(x_test)
-
-for i in range(15):
-    img = x_test[i]
-    img = img.reshape((64, 64))
-    plt.subplot(3, 5, i + 1)
-    title = ''
-    plt.title(get_class_title(classes[i]))
-    plt.imshow(img, cmap='gray')
-    plt.axis('off')
-
-plt.subplots_adjust(hspace=0.5)
-plt.show()
+plot_history(history)
+predict_and_plot(model, x_train)
