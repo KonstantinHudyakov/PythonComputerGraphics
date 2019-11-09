@@ -43,7 +43,7 @@ def gen_data(n):
 
 
 def gen_labels(n, num_of_classes):
-    labels = np.empty(shape=1, dtype='uint8')
+    labels = np.empty(shape=0, dtype='uint8')
     for i in range(0, num_of_classes):
         labels = np.concatenate((labels, np.full(n, i)))
     return labels

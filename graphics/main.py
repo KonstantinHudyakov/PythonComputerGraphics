@@ -66,12 +66,29 @@ def predict_and_plot(model, test_data):
 
 
 def calc_val_predict(model, test_data, test_labels):
-    size = len(test_data)
+    x_test = np.array(test_data, dtype='float').reshape((len(test_data), 64, 64, 1)) / 255.0
+    size = len(x_test)
     right = 0
-    predicted_labels = model.predict(test_data)
-    for i in range(len(test_data)):
+    predicted_labels = model.predict(x_test)
+    false = []
+    for i in range(len(x_test)):
         if np.argmax(predicted_labels[i]) == np.argmax(test_labels[i]):
             right += 1
+        else:
+            false.append(i)
+
+    for i in range(min(6, len(false))):
+        plt.subplot(2, 3, i + 1)
+        plt.imshow(test_data[false[i]])
+        plt.title(get_class_title(np.argmax(predicted_labels[false[i]])))
+        plt.axis('off')
+        for j in range(len(predicted_labels[false[i]])):
+            predicted_labels[false[i]][j] = round(predicted_labels[false[i]][j], 2)
+        print(str(i) + ')' + str(predicted_labels[false[i]]) + '\n  ' + str(test_labels[false[i]]))
+
+    plt.subplots_adjust(hspace=0.5)
+    plt.show()
+
     return right / size
 
 
@@ -79,6 +96,9 @@ def calc_val_predict(model, test_data, test_labels):
 
 x_train, y_train = gen_dataset(3000)
 x_test, y_test = gen_dataset(600)
+
+# Сохраним изначальный массив изображений
+test_data = x_test
 
 x_train = np.array(x_train, dtype='float').reshape((len(x_train), 64, 64, 1)) / 255.0
 x_test = np.array(x_test, dtype='float').reshape((len(x_test), 64, 64, 1)) / 255.0
@@ -102,9 +122,9 @@ model.summary()
 model.compile(optimizer='Adam', loss='mse', metrics=['accuracy'])
 
 history = model.fit(x_train, y_train, batch_size=128, epochs=10, verbose=2, validation_data=(x_test, y_test))
-result = model.evaluate(x_test, y_test)
+#result = model.evaluate(x_test, y_test)
 plot_history(history)
 #predict_and_plot(model, x_train)
 
-val_predict = calc_val_predict(model, x_test, y_test)
+val_predict = calc_val_predict(model, test_data, y_test)
 print('val_predict = ' + str(round(val_predict, 4)))
