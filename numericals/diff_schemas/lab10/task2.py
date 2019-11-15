@@ -1,18 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from numericals.diff_schemas.lab10.common import build_grid, progonka, runge_rule, infinite_norm
-
-
-def f(x):
-    return -(x * x) + 2.5 * x + 1.25
+from numericals.diff_schemas.lab10.common import build_grid, progonka, infinite_norm, runge_diff
 
 
 def ans(x):
     return -4 * x * x - 14 * x - 3.52396 * np.exp(-x) + 68.524 * np.exp(0.25 * x) - 69
 
 
-def build_coef_matrix(grid, p, q, f):
+def build_coef_matrix(grid, p, q):
     size = len(grid)
     h = (grid[size - 1] - grid[0]) / (size - 1)
 
@@ -37,11 +33,28 @@ def build_values_vector(grid, f, ua, ub):
 
 
 def base_finite_diff_method(a, b, ua, ub, p, q, f, n):
+    # Строим сетку по заданному разбиению
     grid = build_grid(a, b, n)
-    matrix = build_coef_matrix(grid, p, q, f)
+    # Получаем трёхдиагональную матрицу коэффициентов системы уравнений
+    matrix = build_coef_matrix(grid, p, q)
+    # Получаем вектор значений правой части
     values = build_values_vector(grid, f, ua, ub)
+    # Решаем систему методом прогонки
     ans = progonka(matrix, values)
     return grid, ans
+
+
+def runge_rule(a, b, ua, ub, p, q, f, eps, method, method_order):
+    n = 2
+    x1, y1 = method(a, b, ua, ub, p, q, f, n)
+    x2, y2 = method(a, b, ua, ub, p, q, f, 2 * n)
+    r = runge_diff(y1, y2, n, method_order)
+    while r > eps:
+        n *= 2
+        y1 = y2
+        x2, y2 = method(a, b, ua, ub, p, q, f, 2 * n)
+        r = runge_diff(y1, y2, n, method_order)
+    return x2, y2, 2 * n
 
 
 a = 0
@@ -51,12 +64,13 @@ ub = -0.5
 p = -0.75
 q = 0.25
 eps = 0.001
+f = lambda x: -(x * x) + 2.5 * x + 1.25
 
 x, y, n = runge_rule(a, b, ua, ub, p, q, f, eps, method=base_finite_diff_method, method_order=2)
 
-diff = infinite_norm(ans(x), y)
-print(n)
-print(diff)
+diff = infinite_norm(ans(x) - y)
+print('n = ' + str(n))
+print('diff = ' + str(round(diff, 4)))
 
 plt.figure(dpi=200)
 plt.plot(x, ans(x), 'r--', label='Точное решение')

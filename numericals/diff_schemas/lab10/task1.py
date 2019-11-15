@@ -4,10 +4,6 @@ import matplotlib.pyplot as plt
 from numericals.diff_schemas.lab10.common import build_grid, infinite_norm, runge_diff
 
 
-def f(x):
-    return -(x * x) + 2.5 * x + 1.25
-
-
 def ans(x):
     return -4 * x * x - 14 * x + 1.8 * np.exp(-x) + 63.2 * np.exp(0.25 * x) - 69
 
@@ -46,7 +42,7 @@ u1 = 0
 p = -0.75
 q = 0.25
 eps = 0.001
-
+f = lambda x: -(x * x) + 2.5 * x + 1.25
 
 y0 = np.array([u0, u1])
 A = np.array([[0, 1], [q, p]])
@@ -54,12 +50,12 @@ b = lambda x: np.array([0, -f(x)])
 
 t, y, n = runge_rule(t0, T, y0, A, b, eps, method=vector_euler, method_order=1)
 
-diff = infinite_norm(ans(t), y)
-print(n)
-print(diff)
+diff = infinite_norm(ans(t) - y)
+print('n = ' + str(n))
+print('diff = ' + str(round(diff, 4)))
 
 plt.figure(dpi=200)
-plt.plot(t, ans(t), 'r--', label='Точное решение', linewidth = 7)
+plt.plot(t, ans(t), 'r--', label='Точное решение', linewidth=7)
 plt.plot(t, y, 'bo', label='Метод Эйлера', markersize=1)
 plt.ylabel('y')
 plt.xlabel('x')

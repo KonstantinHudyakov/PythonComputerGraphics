@@ -3,9 +3,8 @@ import matplotlib.pyplot as plt
 
 
 # v1 и v2 - numpy arrays
-def infinite_norm(v1, v2):
-    diff = v1 - v2
-    return abs(max(diff.max(), diff.min(), key=abs))
+def infinite_norm(v):
+    return abs(max(v.max(), v.min(), key=abs))
 
 
 def build_grid(a, b, n):
@@ -35,24 +34,29 @@ def progonka(matrix, values):
     return ans
 
 
-def runge_rule(a, b, ua, ub, p, q, f, eps, method, method_order):
-    n = 2
-    x1, y1 = method(a, b, ua, ub, p, q, f, n)
-    x2, y2 = method(a, b, ua, ub, p, q, f, 2 * n)
-    r = runge_diff(y1, y2, n, method_order)
-    while r > eps:
-        n *= 2
-        y1 = y2
-        x2, y2 = method(a, b, ua, ub, p, q, f, 2 * n)
-        r = runge_diff(y1, y2, n, method_order)
-    return x2, y2, 2 * n
-
-
 def runge_diff(y1, y2, n, method_order):
-    m = -np.inf
+    m = -1
     for i in range(0, n + 1):
         eps = abs((y2[2 * i] - y1[i]) / (2 ** method_order - 1))
         if eps > m:
             m = eps
     return m
+
+
+def lower_bound(arr, target):
+    left = 0
+    right = len(arr) - 1
+    while left < right + 1:
+        mid = left + (right - left) // 2
+        if target >= arr[mid] and target <= arr[mid + 1]:
+            return mid + 1
+        elif target > arr[mid]:
+            left = mid + 1
+        else:
+            right = mid
+    if target >= arr[left] and target <= arr[left + 1]:
+        return right
+    else:
+        return left
+
 
