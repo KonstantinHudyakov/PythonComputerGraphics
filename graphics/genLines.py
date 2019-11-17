@@ -10,7 +10,7 @@ def gen_lines(N):
     for i in range(N):
         a = np.random.uniform(-2., 2.)  # случайное число
         b = np.random.uniform(20., 40.)
-        x = 0.
+        x = 1.
         dx = 0.25  # пискели
         while x < img_rc - 2:
             x += dx  # меняется по пикселямx
@@ -18,11 +18,20 @@ def gen_lines(N):
             ix = int(x)
             iy = int(y)
             if iy >= 0 and iy <= 63:
-                clr = np.random.choice(range(100, 255))
+                clr = np.random.choice(range(180, 255))
                 imgs[i, ix, iy] = clr
+                imgs[i, ix + 1, iy] = clr
+                imgs[i, ix - 1, iy] = clr
             if iy + 1 >= 0 and iy + 1 <= 63:
-                clr = np.random.choice(range(100, 255))
+                clr = np.random.choice(range(180, 255))
                 imgs[i, ix, iy + 1] = clr
+                imgs[i, ix + 1, iy + 1] = clr
+                imgs[i, ix - 1, iy + 1] = clr
+            if iy + 2 >= 0 and iy + 2 <= 63:
+                clr = np.random.choice(range(180, 255))
+                imgs[i, ix, iy + 2] = clr
+                imgs[i, ix + 1, iy + 2] = clr
+                imgs[i, ix - 1, iy + 2] = clr
     return imgs
 
 
@@ -33,9 +42,9 @@ def gen_dotted_lines(N):
         a = np.random.uniform(-2., 2.)  # случайное число
         b = np.random.uniform(20., 40.)
         dot_space = np.random.randint(2, 3)
-        x = 0.
+        x = 1.
         dx = 0.25  # пискели
-        while x < img_rc - 1:
+        while x < img_rc - 2:
             x += dx  # меняется по пикселям
             if int(x) / dot_space % 2 != 0:
                 continue
@@ -43,11 +52,20 @@ def gen_dotted_lines(N):
             ix = int(x)
             iy = int(y)
             if iy >= 0 and iy <= 63:
-                clr = np.random.choice(range(100, 255))
+                clr = np.random.choice(range(180, 255))
                 imgs[i, ix, iy] = clr
+                imgs[i, ix + 1, iy] = clr
+                imgs[i, ix - 1, iy] = clr
             if iy + 1 >= 0 and iy + 1 <= 63:
-                clr = np.random.choice(range(100, 255))
+                clr = np.random.choice(range(180, 255))
                 imgs[i, ix, iy + 1] = clr
+                imgs[i, ix + 1, iy + 1] = clr
+                imgs[i, ix - 1, iy + 1] = clr
+            if iy + 2 >= 0 and iy + 2 <= 63:
+                clr = np.random.choice(range(180, 255))
+                imgs[i, ix, iy + 2] = clr
+                imgs[i, ix + 1, iy + 2] = clr
+                imgs[i, ix - 1, iy + 2] = clr
     return imgs
 
 # imgs_labels = np.zeros(N, dtype = 'uint8')

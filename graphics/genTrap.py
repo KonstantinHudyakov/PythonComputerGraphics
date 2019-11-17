@@ -13,11 +13,20 @@ def draw_line(x1, y1, x2, y2, imgs, i):
         ix = int(x)
         iy = int(y)
         if 0 <= iy <= 63:
-            clr = np.random.choice(range(100, 255))
+            clr = np.random.choice(range(180, 255))
             imgs[i, ix, iy] = clr
+            if ix + 1 <= 63:
+                imgs[i, ix + 1, iy] = clr
         if 0 <= iy + 1 <= 63:
-            clr = np.random.choice(range(100, 255))
+            clr = np.random.choice(range(180, 255))
             imgs[i, ix, iy + 1] = clr
+            if ix + 1 <= 63:
+                imgs[i, ix + 1, iy + 1] = clr
+        if 0 <= iy + 2 <= 63:
+            clr = np.random.choice(range(180, 255))
+            imgs[i, ix, iy + 2] = clr
+            if ix + 1 <= 63:
+                imgs[i, ix + 1, iy + 2] = clr
 
 
 def draw_straight_line(x, y1, y2, imgs, i):
@@ -25,9 +34,10 @@ def draw_straight_line(x, y1, y2, imgs, i):
     y1 = int(y1)
     y2 = int(y2)
     for y in range(y1, y2 + 1):
-        clr = np.random.choice(range(100, 255))
+        clr = np.random.choice(range(180, 255))
         imgs[i, x, y] = clr
         imgs[i, x + 1, y] = clr
+        imgs[i, x - 1, y] = clr
 
 
 def gen_trap(N):
