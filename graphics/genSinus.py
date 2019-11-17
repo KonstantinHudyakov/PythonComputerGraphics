@@ -23,6 +23,9 @@ def gen_sinus(N):
             if iy >= 0 and iy <= 63:
                 clr = np.random.choice(range(100, 255))
                 imgs[i, ix, iy] = clr
+            if iy + 1 >= 0 and iy + 1 <= 63:
+                clr = np.random.choice(range(100, 255))
+                imgs[i, ix, iy + 1] = clr
     return imgs
 
 
@@ -47,10 +50,16 @@ def gen_part_sinus(N):
                 if iy >= 0 and iy < 31:
                     clr = np.random.choice(range(100, 255))
                     imgs[i, ix, iy] = clr
+                if iy + 1 >= 0 and iy + 1 < 31:
+                    clr = np.random.choice(range(100, 255))
+                    imgs[i, ix, iy + 1] = clr
             else:
                 if iy > 32 and iy <= 63:
                     clr = np.random.choice(range(100, 255))
                     imgs[i, ix, iy] = clr
+                if iy + 1 > 32 and iy + 1 <= 63:
+                    clr = np.random.choice(range(100, 255))
+                    imgs[i, ix, iy + 1] = clr
     return imgs
 
 # a_all = []

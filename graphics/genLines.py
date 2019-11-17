@@ -12,7 +12,7 @@ def gen_lines(N):
         b = np.random.uniform(20., 40.)
         x = 0.
         dx = 0.25  # пискели
-        while x < img_rc - 1:
+        while x < img_rc - 2:
             x += dx  # меняется по пикселямx
             y = a * x + b
             ix = int(x)
@@ -20,6 +20,9 @@ def gen_lines(N):
             if iy >= 0 and iy <= 63:
                 clr = np.random.choice(range(100, 255))
                 imgs[i, ix, iy] = clr
+            if iy + 1 >= 0 and iy + 1 <= 63:
+                clr = np.random.choice(range(100, 255))
+                imgs[i, ix, iy + 1] = clr
     return imgs
 
 
@@ -42,6 +45,9 @@ def gen_dotted_lines(N):
             if iy >= 0 and iy <= 63:
                 clr = np.random.choice(range(100, 255))
                 imgs[i, ix, iy] = clr
+            if iy + 1 >= 0 and iy + 1 <= 63:
+                clr = np.random.choice(range(100, 255))
+                imgs[i, ix, iy + 1] = clr
     return imgs
 
 # imgs_labels = np.zeros(N, dtype = 'uint8')
