@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import keras
+from tensorflow_core.python.keras.callbacks import ModelCheckpoint
 from tensorflow_core.python.keras.engine.input_layer import Input
 from tensorflow_core.python.keras.layers.convolutional import Conv1D, Conv2D
 from tensorflow_core.python.keras.layers.normalization import BatchNormalization
@@ -60,20 +61,27 @@ output = layers[-1](x)
 
 model = Model(inputs=inp, outputs=output)
 model.summary()
-model.compile(optimizer='Adam', loss='binary_crossentropy', metrics=['accuracy'])
+model.compile(optimizer='Adam', loss='binary_crossentropy', metrics=['categorical_accuracy'])
 
-history = model.fit(x_train, y_train, batch_size=200, epochs=10, verbose=1, validation_data=(x_test, y_test))
+callbacks = []
+filesToSave = 'weights.{epoch:03d}-{val_categorical_accuracy:.4f}.hdf5'
+checkpoint = ModelCheckpoint(path_to_history + filesToSave, monitor='val_categorical_accuracy', verbose=0,
+                             save_weights_only=True, save_best_only=True, mode='max', period=1)
+callbacks.append(checkpoint)
+
+history = model.fit(x_train, y_train, batch_size=200, epochs=10, verbose=1, validation_data=(x_test, y_test),
+                    callbacks=callbacks)
 history = history.history
 
-acc_history = history['accuracy']
-val_acc_history = history['val_accuracy']
+acc_history = history['categorical_accuracy']
+val_acc_history = history['val_categorical_accuracy']
 loss_history = history['loss']
 val_loss_history = history['val_loss']
 
 # save_history(history, n_model, pathToHistory)
 
 plt.figure(dpi=200)
-one_plot(1, 'accuracy', acc_history, val_acc_history)
+one_plot(1, 'categorical accuracy', acc_history, val_acc_history)
 one_plot(2, 'loss', loss_history, val_loss_history)
 plt.subplots_adjust(wspace=0.5)
 plt.show()
@@ -81,7 +89,7 @@ plt.show()
 max_acc_ind = np.argmax(acc_history)
 max_val_acc_ind = np.argmax(val_acc_history)
 
-print('max accuracy epoch = ' + str(max_acc_ind + 1))
-print('max accuracy value = ' + str(round(acc_history[max_acc_ind], 4)))
-print('max val_accuracy epoch = ' + str(max_val_acc_ind + 1))
-print('max val_accuracy value = ' + str(round(val_acc_history[max_val_acc_ind], 4)))
+print('max categorical accuracy epoch = ' + str(max_acc_ind + 1))
+print('max categorical accuracy value = ' + str(round(acc_history[max_acc_ind], 4)))
+print('max val_categorical_accuracy epoch = ' + str(max_val_acc_ind + 1))
+print('max val_categorical_accuracy value = ' + str(round(val_acc_history[max_val_acc_ind], 4)))

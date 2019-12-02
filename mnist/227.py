@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import keras
+from tensorflow_core.python.keras.engine.input_layer import Input
 from tensorflow_core.python.keras.layers.convolutional import Conv1D, Conv2D
 from tensorflow_core.python.keras.layers.normalization import BatchNormalization
 from tensorflow_core.python.keras.layers.pooling import MaxPooling1D, MaxPooling2D
@@ -29,12 +30,13 @@ rate_conv = [0, 0, 0.3] # Если 0, то слоя Dropout перед слое�
 bn_conv = [False, False, False] # Если False, то слоя BatchNormalization после слоя Conv нет
 
 input_shape = (img_rows * img_cols, 1)
-if use_conv == 1:
-    input_shape = (None, img_rows * img_cols, 1)
-elif use_conv == 2:
-    input_shape = (None, img_rows, img_cols, 1)
+# if use_conv == 1:
+#     input_shape = (img_rows * img_cols, 1)
+if use_conv == 2:
+    input_shape = (img_rows, img_cols, 1)
 
 model = Sequential()
+model.add(Input(shape=input_shape))
 
 if use_conv == 1:
     x_train = x_train.reshape(len(x_train), img_rows * img_cols, 1)
@@ -66,7 +68,6 @@ for k in range(3):
 #model.add(Dropout(0.2))
 model.add(Dense(num_classes, activation='softmax'))
 
-model.build(input_shape=input_shape)
 model.summary()
 model.compile(optimizer='Adam', loss='mse', metrics=['accuracy'])
 
@@ -93,3 +94,6 @@ print('max accuracy epoch = ' + str(max_acc_ind + 1))
 print('max accuracy value = ' + str(round(acc_history[max_acc_ind], 4)))
 print('max val_accuracy epoch = ' + str(max_val_acc_ind + 1))
 print('max val_accuracy value = ' + str(round(val_acc_history[max_val_acc_ind], 4)))
+
+model_filename = pathToHistory + 'mnist_conv2d_model.h5'
+model.save(model_filename)
