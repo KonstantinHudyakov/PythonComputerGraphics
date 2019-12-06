@@ -65,12 +65,11 @@ model.compile(optimizer='Adam', loss='binary_crossentropy', metrics=['categorica
 
 callbacks = []
 filesToSave = 'weights.{epoch:03d}-{val_categorical_accuracy:.4f}.hdf5'
-checkpoint = ModelCheckpoint(path_to_history + filesToSave, monitor='val_categorical_accuracy', verbose=0,
-                             save_weights_only=True, save_best_only=True, mode='max', period=1)
+checkpoint = ModelCheckpoint(path_to_history + filesToSave, monitor = 'val_categorical_accuracy', verbose = 0,
+        save_weights_only = True, save_best_only = True, mode = 'max', period = 1)
 callbacks.append(checkpoint)
 
-history = model.fit(x_train, y_train, batch_size=200, epochs=10, verbose=1, validation_data=(x_test, y_test),
-                    callbacks=callbacks)
+history = model.fit(x_train, y_train, batch_size=200, epochs=10, verbose=1, validation_data=(x_test, y_test), callbacks=callbacks)
 history = history.history
 
 acc_history = history['categorical_accuracy']

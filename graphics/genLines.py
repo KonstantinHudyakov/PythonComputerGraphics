@@ -21,17 +21,10 @@ def gen_lines(N):
                 clr = np.random.choice(range(180, 255))
                 imgs[i, ix, iy] = clr
                 imgs[i, ix + 1, iy] = clr
-                imgs[i, ix - 1, iy] = clr
             if iy + 1 >= 0 and iy + 1 <= 63:
                 clr = np.random.choice(range(180, 255))
                 imgs[i, ix, iy + 1] = clr
                 imgs[i, ix + 1, iy + 1] = clr
-                imgs[i, ix - 1, iy + 1] = clr
-            if iy + 2 >= 0 and iy + 2 <= 63:
-                clr = np.random.choice(range(180, 255))
-                imgs[i, ix, iy + 2] = clr
-                imgs[i, ix + 1, iy + 2] = clr
-                imgs[i, ix - 1, iy + 2] = clr
     return imgs
 
 
@@ -55,17 +48,10 @@ def gen_dotted_lines(N):
                 clr = np.random.choice(range(180, 255))
                 imgs[i, ix, iy] = clr
                 imgs[i, ix + 1, iy] = clr
-                imgs[i, ix - 1, iy] = clr
             if iy + 1 >= 0 and iy + 1 <= 63:
                 clr = np.random.choice(range(180, 255))
                 imgs[i, ix, iy + 1] = clr
                 imgs[i, ix + 1, iy + 1] = clr
-                imgs[i, ix - 1, iy + 1] = clr
-            if iy + 2 >= 0 and iy + 2 <= 63:
-                clr = np.random.choice(range(180, 255))
-                imgs[i, ix, iy + 2] = clr
-                imgs[i, ix + 1, iy + 2] = clr
-                imgs[i, ix - 1, iy + 2] = clr
     return imgs
 
 # imgs_labels = np.zeros(N, dtype = 'uint8')
