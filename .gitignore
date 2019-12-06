@@ -21,6 +21,7 @@ hs_err_pid*
 
 *.pdf
 *.jpg
+*.gif
 *.png
 *.dat
 *.docx
